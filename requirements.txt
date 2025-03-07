@@ -1,0 +1,12 @@
+streamlit==1.33.0           # Frontend UI
+google-generativeai==0.3.2  # PaLM API integration
+firebase-admin==6.2.0       # Firebase authentication/database
+twilio==8.3.0               # OTP SMS authentication
+assemblyai==0.37.0          # Voice-to-text transcription
+langdetect==1.0.9           # Detect input language (Hindi/English)
+python-dotenv==1.0.1        # Manage environment variables
+requests==2.31.0            # API calls (AssemblyAI/Google)
+pandas==2.1.4               # Data handling (optional for history)
+numpy==1.26.4               # Data processing
+jsonschema==4.21.1          # Validate integration contracts
+python-multipart==0.0.6     # Handle file uploads (voice)

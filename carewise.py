@@ -301,7 +301,7 @@ def get_health_advice(symptoms, past_history=None):
                 temperature=0.3,
                 top_p=0.9,
                 top_k=40,
-                max_output_tokens=1024
+                max_output_tokens=512
             )
         )
         return response.text
@@ -402,7 +402,7 @@ if not st.session_state.authenticated:
             st.session_state.login_phone = input_phone
             st.success(f"✅ OTP sent to {input_phone} (Demo OTP: 123456)")
         else:
-            st.error("⚠️ Please enter a valid 10-digit phone number")
+            st.error("⚠ Please enter a valid 10-digit phone number")
     
     if st.session_state.generated_otp:
         otp_col1, otp_col2 = st.columns([3, 1])
@@ -421,7 +421,7 @@ if not st.session_state.authenticated:
                 st.success("Authentication successful!")
                 st.rerun()
             else:
-                st.error("⚠️ Invalid OTP. Please try again.")
+                st.error("⚠ Invalid OTP. Please try again.")
     
     # Close login card
     st.markdown('</div>', unsafe_allow_html=True)
@@ -506,13 +506,15 @@ if "messages" not in st.session_state:
     # Add welcome message
     st.session_state.messages.append({
         "role": "assistant", 
-        "content": "👨‍⚕️ Welcome to MediConsult Pro! I'm your virtual healthcare assistant. How can I help you today? Please describe any symptoms you're experiencing."
+        "content": "👨‍⚕ Welcome to MediConsult Pro! I'm your virtual healthcare assistant. How can I help you today? Please describe any symptoms you're experiencing."
     })
 
 # Display chat history
 for msg in st.session_state.messages:
-    with st.chat_message(msg["role"], avatar="👤" if msg["role"] == "user" else "👨‍⚕️"):
+    with st.chat_message(msg["role"], avatar="👤" if msg["role"] == "user" else "👨‍⚕"):
         st.markdown(msg["content"])
+
+# Handle user input
 
 # Handle user input
 if prompt := st.chat_input("Tell me about your symptoms..."):
@@ -521,15 +523,15 @@ if prompt := st.chat_input("Tell me about your symptoms..."):
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt)
     
-    with st.spinner("Analyzing your symptoms..."):
-        response = handle_user_input(
-            prompt, 
-            st.session_state.user_session_id
-        )
-        
-        st.session_state.messages.append({"role": "assistant", "content": response})
+    # Removed spinner block
+    response = handle_user_input(
+        prompt, 
+        st.session_state.user_session_id
+    )
     
-    with st.chat_message("assistant", avatar="👨‍⚕️"):
+    st.session_state.messages.append({"role": "assistant", "content": response})
+    
+    with st.chat_message("assistant", avatar="👨‍⚕"):
         st.markdown(response)
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -538,7 +540,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown("""
 <div style="text-align: center; margin-top: 30px; padding: 20px; border-top: 1px solid #333;">
     <p style="font-size: 0.9rem; color: #999;">
-        <strong>⚠️ Disclaimer:</strong> This AI healthcare assistant provides general information and is not a substitute for professional medical advice, diagnosis, or treatment.
+        <strong>⚠ Disclaimer:</strong> This AI healthcare assistant provides general information and is not a substitute for professional medical advice, diagnosis, or treatment.
         Always seek the advice of your physician with any questions about medical conditions.
     </p>
     <p style="font-size: 0.8rem; color: #666; margin-top: 20px;">
@@ -551,4 +553,4 @@ st.markdown("""
 if st.sidebar.button("📤 Logout"):
     for key in list(st.session_state.keys()):
         del st.session_state[key]
-    st.rerun()
+        st.rerun()
